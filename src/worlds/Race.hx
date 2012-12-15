@@ -44,9 +44,11 @@ class Race extends World {
 		var afloor:Entity = addGraphic(Image.createRect(HXP.width, Std.int(HXP.halfHeight*.25), 0x111111));
 		afloor.x = 0;
 		afloor.y = Std.int(HXP.height - (HXP.halfHeight*.25));
+		afloor.setHitboxTo(afloor.graphic);
+		afloor.type = "solid";
 
 		// player
-		var player:Player = new Player(30, Std.int(afloor.y));
+		var player:Player = new Player(30, Std.int(afloor.y - 30));
 		player.y -= player.height;
 		add(player);
 	}
