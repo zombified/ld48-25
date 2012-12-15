@@ -26,14 +26,13 @@ class PhysicsEntity extends Entity {
 		gravity = new Point();
 	}
 
-
 	public override function update() {
 		// update velocity;
 		vel.x += acc.x;
 		vel.y += acc.y;
 
 		// update position
-		moveBy(vel.x, vel.y, "solid", true);
+		moveBy(vel.x, vel.y, ["solid", "obstacle"], true);
 
 		// adjust velocity for gravity
 		vel.x += gravity.x;

@@ -8,12 +8,17 @@ import com.haxepunk.utils.Input;
 import com.haxepunk.World;
 
 import entities.Player;
+import entities.Obstacle;
 
 
 class Race extends World {
+	public var scroll_rate:Float = 0.5;
+
+
 	public function new() {
 		super();
 	}
+
 
 	public override function begin() {
 		// =========== PASSIONATE KITTY HALF ================
@@ -32,6 +37,8 @@ class Race extends World {
 		var sep:Entity = addGraphic(Image.createRect(HXP.width, 4, 0x000000));
 		sep.x = 0;
 		sep.y = Std.int(HXP.halfHeight)-2;
+		sep.setHitboxTo(sep);
+		sep.type = "solid";
 
 
 		// =========== APATHY GOAT HALF =====================
@@ -48,9 +55,14 @@ class Race extends World {
 		afloor.type = "solid";
 
 		// player
-		var player:Player = new Player(30, Std.int(afloor.y - 30));
+		var player:Player = new Player(30, Std.int(afloor.y));
 		player.y -= player.height;
+		player.type = "player";
 		add(player);
+
+
+
+		add(new Obstacle(400, Std.int(afloor.y - 10)));
 	}
 
 	public override function update() {
