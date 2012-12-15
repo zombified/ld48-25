@@ -9,7 +9,7 @@ class FloorBlock extends Entity {
 	private var _min_w = 200;
 	private var _max_w = 400;
 	private var _min_h = 35;
-	private var _max_h = 65;
+	private var _max_h = 75;
 
 
 	public function new(x:Int, y:Int) {

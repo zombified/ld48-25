@@ -13,11 +13,15 @@ import entities.Player;
 
 
 class Race extends World {
+	private var _player:Player;
+
 	private var _obstacles:Array<Obstacle>;
+	private var _num_obstacles = 30;
 
 	private var _floor_blocks:Array<FloorBlock>;
+	private var _num_floor_blocks = 10;
 	private var _floor_block_min_dist = 15;
-	private var _floor_block_max_dist = 75;
+	private var _floor_block_max_dist = 95;
 
 
 	public var scroll_rate:Float = 2.0;
@@ -25,7 +29,9 @@ class Race extends World {
 
 	public function new() {
 		super();
+
 		_floor_blocks = new Array<FloorBlock>();
+		_obstacles = new Array<Obstacle>();
 	}
 
 
@@ -35,14 +41,14 @@ class Race extends World {
 		aback.x = aback.y = 0;
 
 		// floor and obstacles
-		_create_floor_blocks();
 		_create_obstacles();
+		_create_floor_blocks();
 
 		// player
-		var player:Player = new Player(60, Std.int(_floor_blocks[0].y));
-		player.y -= player.height;
-		player.type = "player";
-		add(player);
+		_player = new Player(60, Std.int(_floor_blocks[0].y));
+		_player.y -= _player.height;
+		_player.type = "player";
+		add(_player);
 	}
 
 	public override function update() {
@@ -51,6 +57,7 @@ class Race extends World {
 		}
 
 
+		_check_obstacles();
 		_check_floor_blocks();
 
 		super.update();
@@ -58,13 +65,22 @@ class Race extends World {
 
 
 	private function _create_obstacles() {
+		var i = 0, ob:Obstacle;
+		while(i < _num_obstacles) {
+			ob = new Obstacle(0, 0);
+			ob.x = Std.random(HXP.width*2) + 1;
+			ob.y = Std.random(HXP.height) + 1;
 
+			_obstacles.push(ob);
+			add(ob);
+
+			i++;
+		}
 	}
 
 	private function _create_floor_blocks() {
-		var block:FloorBlock;
-		var lastx = -1, lastw = -1, x = 0;
-		while(true) {
+		var i = 0, block:FloorBlock, lastx = -1, lastw = -1, x =0;
+		while(i < _num_floor_blocks) {
 			if(lastx < 0) {
 				x = lastx = 0;
 			}
@@ -77,10 +93,7 @@ class Race extends World {
 			lastw = block.width;
 			_floor_blocks.push(block);
 			add(block);
-
-			if(x > HXP.width) {
-				break;
-			}
+			i++;
 		}
 	}
 
@@ -100,6 +113,19 @@ class Race extends World {
 			}
 
 			break; // if it gets here, no more blocks should be to the left of the left edge of the screen
+		}
+	}
+
+	private function _check_obstacles() {
+		var i = 0, ob:Obstacle;
+		while(i < _obstacles.length) {
+			ob = _obstacles[i];
+			if(ob.x + ob.width < -5) {
+				ob.regen();
+				ob.x = Std.random(HXP.width) + 1 + HXP.width;
+				ob.y = Std.random(HXP.height) + 1;
+			}
+			i++;
 		}
 	}
 }
