@@ -60,7 +60,15 @@ class Coin extends Entity {
 			"You ignored the leaky faucet... again",
 			"After 3 weeks you are still ignoring the faulty cable connection",
 			"You ignored the cat litter... again",
-			"You decided not to shave today because it's a lot of work"
+			"You decided not to shave today because it's a lot of work",
+			"You decided to lay on the floor and do nothing",
+			"Dog needs water? You ignored it because you could do it later",
+			"Your office gets messy because \"you'll clean it later\"",
+			"You decided not to shovel because the snow \"looks pretty\"",
+			"You buy underwear so you don't have to do the wash",
+			"The mailbox is just to far away, so you haven't checked it in a month",
+			"You car's oil hasn't changed in year because you \"don't have time to call\"",
+			"You decide not to go to the dentist",
 		];
 
 		var passionmsgs = [

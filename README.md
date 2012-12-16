@@ -19,10 +19,14 @@ The __UP__ and __W__ buttons make the goat jump.
 
 The __M__ button toggles the music on or off.
 
+The __R__ button resets the game.
+
+Press __ESC__ during the game to go back to the intro screen.
+
 
 ## Ludum Dare
 
-This game was made for the 25th [Ludum Dare](http://ludumdare.com) 48 hour game making competition.
+This game was made for the 25th [Ludum Dare](http://ludumdare.com) 48 hour game making competition ([entry page](http://www.ludumdare.com/compo/ludum-dare-25/?action=preview&uid=7263)).
 
 The theme for LD48 #25 was _You Are The Enemy_.
 
