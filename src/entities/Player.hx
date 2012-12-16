@@ -15,6 +15,8 @@ class Player extends PhysicsEntity {
 	private var _speed = 1;
 	private var _jumpspeed = 15;
 
+	private var _time_since_move = 0.0;
+
 
 	public function new(x:Int, y:Int) {
 		super(x, y);
@@ -38,6 +40,8 @@ class Player extends PhysicsEntity {
 		Input.define("jump", [Key.UP, Key.W, Key.SPACE]);
 		Input.define("left", [Key.LEFT, Key.A]);
 		Input.define("right", [Key.RIGHT, Key.D]);
+
+		HXP.timeFlag();
 	}
 
 
@@ -47,16 +51,29 @@ class Player extends PhysicsEntity {
 		if(Input.pressed("jump") && onground) {
 			acc.y += -HXP.sign(gravity.y) * _jumpspeed;
 			onground = false;
+			_time_since_move = 0.0;
 		}
 
 		if(Input.check("left")) {
 			acc.x -= _speed;
+			_time_since_move = 0.0;
 		}
 		else if(Input.check("right")) {
 			acc.x += _speed;
+			_time_since_move = 0.0;
 		}
 		else {
 			x -= cast(HXP.world, worlds.Race).scroll_rate;
+		}
+
+		if(y > HXP.height) {
+			HXP.world = new worlds.ApathyWins();
+		}
+
+		_time_since_move += HXP.timeFlag();
+
+		if(_time_since_move >= 3 && x < -5) {
+			HXP.world = new worlds.YouWin();
 		}
 
 		super.update();

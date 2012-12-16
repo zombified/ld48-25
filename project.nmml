@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <project>
-	<meta title="ApathyGoat" package="com.example.app" version="1.0.0" company="" />
+	<meta title="APATHY" package="com.joelkleier.apathy" version="1.0.0" company="" />
 
  	<app file="Main" main="Main" path="bin" />
 
-	<window width="800" height="200" orientation="portrait" resizable="true" />
+	<window width="800" height="200" orientation="portrait" resizable="false" />
 	<window fps="30" />
 
 	<source path="src" />

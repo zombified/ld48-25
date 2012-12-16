@@ -21,7 +21,7 @@ class FloorBlock extends Entity {
 
 
 	public override function update() {
-		moveBy(-cast(HXP.world, worlds.Race).scroll_rate, 0);
+		moveBy(-cast(HXP.world, worlds.Race).scroll_rate, 0, "player", true);
 
 		super.update();
 	}

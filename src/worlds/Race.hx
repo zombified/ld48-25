@@ -21,7 +21,7 @@ class Race extends World {
 	private var _floor_blocks:Array<FloorBlock>;
 	private var _num_floor_blocks = 10;
 	private var _floor_block_min_dist = 15;
-	private var _floor_block_max_dist = 95;
+	private var _floor_block_max_dist = 125;
 
 
 	public var scroll_rate:Float = 2.0;
@@ -29,9 +29,6 @@ class Race extends World {
 
 	public function new() {
 		super();
-
-		_floor_blocks = new Array<FloorBlock>();
-		_obstacles = new Array<Obstacle>();
 	}
 
 
@@ -45,15 +42,28 @@ class Race extends World {
 		_create_floor_blocks();
 
 		// player
-		_player = new Player(60, Std.int(_floor_blocks[0].y));
+		_player = new Player(160, Std.int(_floor_blocks[0].y));
 		_player.y -= _player.height;
 		_player.type = "player";
 		add(_player);
+
+
+		Input.define("reset", [Key.R]);
+		Input.define("quit", [Key.ESCAPE]);
 	}
 
 	public override function update() {
-		if(Input.check(Key.ESCAPE)) {
-			nme.system.System.exit(0);	
+		if(Input.check("quit")) {
+			HXP.world = new worlds.Menu();
+		}
+
+		if(Input.check("reset")) {
+			removeList(_obstacles);
+			removeList(_floor_blocks);
+			_create_obstacles();
+			_create_floor_blocks();
+			_player.y = Std.int(_floor_blocks[0].y) - _player.height - 10;
+			_player.x = 160;
 		}
 
 
@@ -65,6 +75,7 @@ class Race extends World {
 
 
 	private function _create_obstacles() {
+		_obstacles = new Array<Obstacle>();
 		var i = 0, ob:Obstacle;
 		while(i < _num_obstacles) {
 			ob = new Obstacle(0, 0);
@@ -79,6 +90,7 @@ class Race extends World {
 	}
 
 	private function _create_floor_blocks() {
+		_floor_blocks = new Array<FloorBlock>();
 		var i = 0, block:FloorBlock, lastx = -1, lastw = -1, x =0;
 		while(i < _num_floor_blocks) {
 			if(lastx < 0) {

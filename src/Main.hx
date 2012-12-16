@@ -8,7 +8,7 @@ class Main extends Engine
 	public static inline var kScreenHeight:Int = 200;
 	public static inline var kFrameRate:Int = 30;
 	public static inline var kClearColor:Int = 0x333333;
-	public static inline var kProjectName:String = "Apathy Goat";
+	public static inline var kProjectName:String = "APATHY";
 
 	public function new()
 	{
@@ -26,7 +26,7 @@ class Main extends Engine
 		}
 #end
 		HXP.screen.color = kClearColor;
-		HXP.world = new worlds.Race();
+		HXP.world = new worlds.Menu();
 	}
 
 	public static function main()
