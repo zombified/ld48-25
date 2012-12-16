@@ -22,4 +22,6 @@ The __UP__ and __W__ buttons make the goat jump.
 
 This game was made for the 25th [Ludum Dare](http://ludumdare.com) 48 hour game making competition.
 
+The theme for LD48 #25 was _You Are The Enemy_.
+
 It was made with [Haxe](http://haxe.org), [NME](http://haxenme.org), and [HaxePunk](http://haxepunk.org).
