@@ -29,8 +29,14 @@ class FloorBlock extends Entity {
 	public function regen() {
 		width = Std.random(_max_w - _min_w) + _min_w + 1;
 		height = Std.random(_max_h - _min_h) + _min_h + 1;
-		graphic = Image.createRect(width, height, 0x11FF11);
-		setHitboxTo(graphic);
+
+		//graphic = Image.createRect(width, height, 0x11FF11);
+		var img = new Image("gfx/floorblock.png");
+		img.scaleX = width / 300;
+		img.scaleY = height / 75;
+		graphic = img;
+
+		setHitboxTo(this);
 	}
 
 }

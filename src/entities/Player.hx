@@ -2,6 +2,7 @@ package entities;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Spritemap;
 import com.haxepunk.HXP;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Input;
@@ -17,6 +18,8 @@ class Player extends PhysicsEntity {
 
 	private var _time_since_move = 0.0;
 
+	public var sprite:Spritemap;
+
 
 	public function new(x:Int, y:Int) {
 		super(x, y);
@@ -25,7 +28,12 @@ class Player extends PhysicsEntity {
 
 		width = 10;
 		height = 20;
-		graphic = Image.createRect(width, height, 0x990000);
+		sprite = new Spritemap("gfx/goat.png", 24, 24);
+		sprite.add("idle", [3]);
+		sprite.add("running", [0, 1, 2], 10, true);
+		sprite.add("jumping", [1]);
+		graphic = sprite;
+		//graphic = Image.createRect(width, height, 0x990000);
 		setHitboxTo(graphic);
 		type = "player";
 
@@ -84,6 +92,8 @@ class Player extends PhysicsEntity {
 
 		super.update();
 
+		set_animations();
+
 		var collidedwith = collide("obstacle", x, y);
 		if(collidedwith != null) {
 			if(x <= collidedwith.x) {
@@ -92,6 +102,20 @@ class Player extends PhysicsEntity {
 			else {
 				x = collidedwith.x + collidedwith.width;
 			}
+		}
+	}
+
+
+	private function set_animations() {
+		if(Input.check("left") || Input.check("right")) {
+			sprite.flipped = Input.check("left");
+			sprite.play("running");
+		}
+		else if(!onground) {
+			sprite.play("jumping");
+		}
+		else {
+			sprite.play("idle");
 		}
 	}
 

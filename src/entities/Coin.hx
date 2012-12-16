@@ -38,7 +38,8 @@ class Coin extends Entity {
 
 		width = 10;
 		height = 10;
-		graphic = Image.createRect(width, height, _apathy_coin ? 0xFF00FF : 0xFFFF00);
+		//graphic = Image.createRect(width, height, _apathy_coin ? 0xFF00FF : 0xFFFF00);
+		graphic = new Image(_apathy_coin ? "gfx/apathycoin.png" : "gfx/passioncoin.png");
 		setHitboxTo(graphic);
 	}
 

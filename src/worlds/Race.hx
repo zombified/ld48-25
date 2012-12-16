@@ -45,7 +45,8 @@ class Race extends World {
 
 	public override function begin() {
 		// background 
-		var aback:Entity = addGraphic(Image.createRect(HXP.width, HXP.height, 0x444444));
+		//var aback:Entity = addGraphic(Image.createRect(HXP.width, HXP.height, 0x444444));
+		var aback:Entity = addGraphic(new Image("gfx/background.png"));
 		aback.x = aback.y = 0;
 
 		// floor and obstacles
