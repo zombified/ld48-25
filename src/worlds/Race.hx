@@ -2,6 +2,7 @@ package worlds;
 
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
+import com.haxepunk.graphics.Text;
 import com.haxepunk.HXP;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Input;
@@ -22,6 +23,9 @@ class Race extends World {
 	private var _num_floor_blocks = 10;
 	private var _floor_block_min_dist = 15;
 	private var _floor_block_max_dist = 125;
+
+	private var _start_time:Date;
+	private var _timer_e:Entity;
 
 
 	public var scroll_rate:Float = 2.0;
@@ -50,6 +54,9 @@ class Race extends World {
 
 		Input.define("reset", [Key.R]);
 		Input.define("quit", [Key.ESCAPE]);
+
+		_timer_e = addGraphic(new Text("000.000.000", HXP.width - 60, HXP.height - 30));
+		_start_time = Date.now();
 	}
 
 	public override function update() {
@@ -64,11 +71,20 @@ class Race extends World {
 			_create_floor_blocks();
 			_player.y = Std.int(_floor_blocks[0].y) - _player.height - 10;
 			_player.x = 160;
+			_start_time = Date.now();
 		}
 
 
 		_check_obstacles();
 		_check_floor_blocks();
+
+		var diff = Date.now().getTime() - _start_time.getTime();
+		var mins = Math.floor(diff / 1000 / 60);
+		var secs = Math.floor((diff - (mins * 60 * 1000)) / 1000);
+		var ms = diff - ((mins * 1000 * 60) + (secs * 1000));
+		trace("diff:" + diff + ", mins:" + mins + ", secs:" + secs + ", ms:" + ms);
+
+		cast(_timer_e.graphic, Text).text = mins + "." + secs + "." + ms;
 
 		super.update();
 	}

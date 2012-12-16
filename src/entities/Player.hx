@@ -23,7 +23,7 @@ class Player extends PhysicsEntity {
 
 		_state = PlayerState.IDLE;
 
-		width =10;
+		width = 10;
 		height = 20;
 		graphic = Image.createRect(width, height, 0x990000);
 		setHitboxTo(graphic);
@@ -72,7 +72,7 @@ class Player extends PhysicsEntity {
 
 		_time_since_move += HXP.timeFlag();
 
-		if(_time_since_move >= 3 && x < -5) {
+		if(_time_since_move >= 3 && x < -5 - width) {
 			HXP.world = new worlds.YouWin();
 		}
 

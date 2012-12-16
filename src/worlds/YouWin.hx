@@ -19,8 +19,9 @@ class YouWin extends World {
 		Input.define("start", [Key.ENTER]);
 
 		addGraphic(new Text("You Win!!!!", 30, 30));
-		addGraphic(new Text("The old goat, APATHY, has been left behind, and your mind is now free to feel PASSION again!", 30, 60));
-		addGraphic(new Text("Now go DO lots of cool things.", 30, 90));
+		addGraphic(new Text("The old goat, APATHY, has been left behind, and your", 30, 70));
+		addGraphic(new Text("mind is now free to feel PASSION again!", 30, 100));
+		addGraphic(new Text("Now go DO lots of cool things.", 30, 140));
 	}
 
 	public override function update() {
