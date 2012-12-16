@@ -8,6 +8,7 @@ import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Input;
 import com.haxepunk.World;
 
+import entities.Coin;
 import entities.FloorBlock;
 import entities.Obstacle;
 import entities.Player;
@@ -22,13 +23,19 @@ class Race extends World {
 	private var _floor_blocks:Array<FloorBlock>;
 	private var _num_floor_blocks = 10;
 	private var _floor_block_min_dist = 15;
-	private var _floor_block_max_dist = 125;
+	private var _floor_block_max_dist = 115;
+
+	private var _num_coins = 30;
+	private var _cur_msg:Entity = null;
 
 	private var _start_time:Date;
 	private var _timer_e:Entity;
 
+	private var _score_e:Entity;
+
 
 	public var scroll_rate:Float = 2.0;
+	public var score:Int = 0;
 
 
 	public function new() {
@@ -44,9 +51,10 @@ class Race extends World {
 		// floor and obstacles
 		_create_obstacles();
 		_create_floor_blocks();
+		_create_coins();
 
 		// player
-		_player = new Player(160, Std.int(_floor_blocks[0].y));
+		_player = new Player(210, Std.int(_floor_blocks[0].y));
 		_player.y -= _player.height;
 		_player.type = "player";
 		add(_player);
@@ -55,8 +63,10 @@ class Race extends World {
 		Input.define("reset", [Key.R]);
 		Input.define("quit", [Key.ESCAPE]);
 
-		_timer_e = addGraphic(new Text("000.000.000", HXP.width - 60, HXP.height - 30));
+		_timer_e = addGraphic(new Text("000.000.000", HXP.width - 90, HXP.height - 30));
 		_start_time = Date.now();
+
+		_score_e = addGraphic(new Text("00000000", HXP.width - 190, HXP.height - 30));
 	}
 
 	public override function update() {
@@ -74,19 +84,31 @@ class Race extends World {
 			_start_time = Date.now();
 		}
 
-
 		_check_obstacles();
 		_check_floor_blocks();
+		_check_coins();
 
 		var diff = Date.now().getTime() - _start_time.getTime();
 		var mins = Math.floor(diff / 1000 / 60);
 		var secs = Math.floor((diff - (mins * 60 * 1000)) / 1000);
 		var ms = diff - ((mins * 1000 * 60) + (secs * 1000));
-		trace("diff:" + diff + ", mins:" + mins + ", secs:" + secs + ", ms:" + ms);
 
 		cast(_timer_e.graphic, Text).text = mins + "." + secs + "." + ms;
 
+		cast(_score_e.graphic, Text).text = score + " xp";
+
 		super.update();
+	}
+
+	public function add_message(msg:String) {
+		if(_cur_msg != null) {
+			remove(_cur_msg);
+		}
+		_cur_msg = addGraphic(new Text(msg, 10, 10));
+	}
+
+	public function get_time_lasted() {
+		return cast(_timer_e.graphic, Text).text;
 	}
 
 
@@ -125,6 +147,17 @@ class Race extends World {
 		}
 	}
 
+	private function _create_coins() {
+		var i = 0;
+		while( i < _num_coins) {
+			add(new Coin(
+					Std.random(HXP.width*2) + 1,
+					Std.random(HXP.height) + 1
+				));
+			i++;
+		}
+	}
+
 	private function _check_floor_blocks() {
 		var i:Int = 0, lastblock:FloorBlock, block:FloorBlock, dist:Int;
 		while(i < _floor_blocks.length) {
@@ -152,6 +185,21 @@ class Race extends World {
 				ob.regen();
 				ob.x = Std.random(HXP.width) + 1 + HXP.width;
 				ob.y = Std.random(HXP.height) + 1;
+			}
+			i++;
+		}
+	}
+
+	private function _check_coins() {
+		var i = 0, c:Coin;
+		var coins:Array<Coin> = [];
+		getType("coin", coins);
+		while(i < coins.length) {
+			c = coins[i];
+			if(c.x + c.width < -5) {
+				c.regen();
+				c.x = Std.random(HXP.width) + 1 + HXP.width;
+				c.y = Std.random(HXP.height) + 1;
 			}
 			i++;
 		}

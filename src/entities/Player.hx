@@ -67,13 +67,19 @@ class Player extends PhysicsEntity {
 		}
 
 		if(y > HXP.height) {
-			HXP.world = new worlds.ApathyWins();
+			HXP.world = new worlds.ApathyWins(cast(HXP.world, worlds.Race).score, cast(HXP.world, worlds.Race).get_time_lasted());
+		}
+		else if(x > HXP.width) {
+			HXP.world = new worlds.ApathyWins(cast(HXP.world, worlds.Race).score, cast(HXP.world, worlds.Race).get_time_lasted());
 		}
 
 		_time_since_move += HXP.timeFlag();
 
-		if(_time_since_move >= 3 && x < -5 - width) {
+		if(_time_since_move >= 3 && x + width < -5) {
 			HXP.world = new worlds.YouWin();
+		}
+		else if(_time_since_move < 3 && x + width < -5) {
+			HXP.world = new worlds.ApathyWins(cast(HXP.world, worlds.Race).score, cast(HXP.world, worlds.Race).get_time_lasted());
 		}
 
 		super.update();
