@@ -3,15 +3,26 @@ package worlds;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.HXP;
+import com.haxepunk.Sfx;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Input;
 import com.haxepunk.World;
 
 
 class YouWin extends World {
+	private static var _music:Sfx;
+
 
 	public function new() {
 		super();
+
+		if(_music == null) {
+			_music = new Sfx("music/weary-and-blazed.mp3");
+		}
+
+		if(Main.MusicOn && !_music.playing) {
+			_music.loop();
+		}
 	}
 
 
@@ -29,6 +40,20 @@ class YouWin extends World {
 			HXP.world = new worlds.Race();
 		}
 
+		if(Input.pressed("togglemusic")) {
+			Main.MusicOn = !Main.MusicOn;
+			if(!Main.MusicOn) {
+				_music.stop();
+			}
+			else if(!_music.playing) {
+				_music.loop();
+			}
+		}
+
 		super.update();
+	}
+
+	public override function end() {
+		_music.stop();
 	}
 }

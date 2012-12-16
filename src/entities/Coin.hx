@@ -3,15 +3,21 @@ package entities;
 import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.HXP;
+import com.haxepunk.Sfx;
 
 
 class Coin extends Entity {
 	private var _apathy_chance = 70; // out of 100
 	private var _apathy_coin = false;
+	private static var _sfx:Sfx;
 
 
 	public function new(x:Int, y:Int) {
 		super(x, y);
+
+		if(_sfx == null) {
+			_sfx = new Sfx("sfx/Pickup_Coin6.wav");
+		}
 
 		regen();
 		type = "coin";
@@ -25,6 +31,7 @@ class Coin extends Entity {
 
 		var collision = collide("player", x, y);
 		if(collision != null) {
+			_sfx.play();
 			cast(HXP.world, worlds.Race).add_message(_get_message());
 			cast(HXP.world, worlds.Race).score += _apathy_coin ? 100 : -200;
 			regen();

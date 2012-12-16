@@ -10,6 +10,8 @@ class Main extends Engine
 	public static inline var kClearColor:Int = 0x333333;
 	public static inline var kProjectName:String = "APATHY";
 
+	public static var MusicOn = true;
+
 	public function new()
 	{
 		super(kScreenWidth, kScreenHeight, kFrameRate, false);

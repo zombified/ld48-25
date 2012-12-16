@@ -4,12 +4,14 @@ import com.haxepunk.Entity;
 import com.haxepunk.graphics.Image;
 import com.haxepunk.graphics.Text;
 import com.haxepunk.HXP;
+import com.haxepunk.Sfx;
 import com.haxepunk.utils.Key;
 import com.haxepunk.utils.Input;
 import com.haxepunk.World;
 
 import entities.Coin;
 import entities.FloorBlock;
+import entities.Message;
 import entities.Obstacle;
 import entities.Player;
 
@@ -33,13 +35,20 @@ class Race extends World {
 
 	private var _score_e:Entity;
 
+	private static var _music:Sfx;
+
 
 	public var scroll_rate:Float = 2.0;
 	public var score:Int = 0;
+	public var message:Message;
 
 
 	public function new() {
 		super();
+
+		if(_music == null) {
+			_music = new Sfx("music/bu-a-hands-tunnel.mp3");
+		}
 	}
 
 
@@ -63,11 +72,19 @@ class Race extends World {
 
 		Input.define("reset", [Key.R]);
 		Input.define("quit", [Key.ESCAPE]);
+		Input.define("togglemusic", [Key.M]);
 
 		_timer_e = addGraphic(new Text("000.000.000", HXP.width - 90, HXP.height - 30));
 		_start_time = Date.now();
 
 		_score_e = addGraphic(new Text("00000000", HXP.width - 190, HXP.height - 30));
+
+		if(Main.MusicOn && !_music.playing) {
+			_music.loop();
+		}
+
+		message = new Message(10, 10);
+		add(message);
 	}
 
 	public override function update() {
@@ -76,13 +93,17 @@ class Race extends World {
 		}
 
 		if(Input.check("reset")) {
-			removeList(_obstacles);
-			removeList(_floor_blocks);
-			_create_obstacles();
-			_create_floor_blocks();
-			_player.y = Std.int(_floor_blocks[0].y) - _player.height - 10;
-			_player.x = 160;
-			_start_time = Date.now();
+			reset();
+		}
+
+		if(Input.pressed("togglemusic")) {
+			Main.MusicOn = !Main.MusicOn;
+			if(!Main.MusicOn) {
+				_music.stop();
+			}
+			else if(!_music.playing) {
+				_music.loop();
+			}
 		}
 
 		_check_obstacles();
@@ -101,11 +122,23 @@ class Race extends World {
 		super.update();
 	}
 
+	public override function end() {
+		_music.stop();
+	}
+
+	public function reset() {
+		message.set_message("");	
+		removeList(_obstacles);
+		removeList(_floor_blocks);
+		_create_obstacles();
+		_create_floor_blocks();
+		_player.y = Std.int(_floor_blocks[0].y) - _player.height - 10;
+		_player.x = 160;
+		_start_time = Date.now();
+	}
+
 	public function add_message(msg:String) {
-		if(_cur_msg != null) {
-			remove(_cur_msg);
-		}
-		_cur_msg = addGraphic(new Text(msg, 10, 10));
+		message.set_message(msg);
 	}
 
 	public function get_time_lasted() {

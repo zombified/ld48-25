@@ -17,6 +17,8 @@ The __RIGHT__ and __D__ buttons move the goat right.
 
 The __UP__ and __W__ buttons make the goat jump.
 
+The __M__ button toggles the music on or off.
+
 
 ## Ludum Dare
 
