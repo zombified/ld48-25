@@ -1,1 +1,4 @@
 bin
+*.xcf
+*.it
+assets/music/*.wav
